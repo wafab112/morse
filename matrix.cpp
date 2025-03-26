@@ -103,6 +103,9 @@ void matrix_draw(char c) {
     case '9': active_muster = muster9;
     break;
 
+    case '+': active_muster = musterErr;
+    break;
+
     default: active_muster = musterErr;
     break;
   }
