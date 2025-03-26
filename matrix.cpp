@@ -1,6 +1,6 @@
 #include "matrix.hpp"
 #include "muster.hpp"
-#include "Arduino.h"
+#include <Arduino.h>
 #include <stdio.h>
 #include <stdint.h>
 
@@ -126,7 +126,6 @@ void matrix_draw(char c) {
 }
 
 void matrix_setup() {
-  // put your setup code here, to run once:
   pinMode(PIN_ROW_0, OUTPUT);
   pinMode(PIN_ROW_1, OUTPUT);
   pinMode(PIN_ROW_2, OUTPUT);

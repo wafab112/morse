@@ -1,6 +1,6 @@
 #include "matrix.hpp"
 #include "taster.hpp"
-#include "stdint.h"
+#include <stdint.h>
 #include <string.h>
 
 #define PIN_TASTER 52
@@ -102,7 +102,7 @@ void setup() {
   Serial.begin(9600);
 
   TCCR2A = 0x00; // Wave Form Generation Mode 0: Normal Mode; OC2A disconnected
-  TCCR2B = (1<<CS22); // prescaler = 1024
+  TCCR2B = (1<<CS22); // prescaler
   TIMSK2 = (1<<TOIE2);
   TCNT2 = 6;
 
@@ -114,21 +114,9 @@ void setup() {
 void loop() {
 
   if (parisTest) return;
-  
-  /*for (char i = 0x30; i < 0x3a; i++) {
-    for (int j = 0; j < 3000; j++) {
-      matrix_draw(i);
-    }
-  }
-
-  for (char i = 0x41; i < 0x5b; i++) {
-    for (int j = 0; j < 3000; j++) {
-      matrix_draw(i);
-    }
-  }*/
 
   if (deltaT != 0) {
-    if (state == DOWN) {
+    if (state == UP) {
       if (deltaT < minDahTimeMs) {
         dits[index] = '.';
       } else {
@@ -148,10 +136,8 @@ void loop() {
     deltaT = 0;
   }
 
-  if (state == DOWN) {
+  if (state == UP) {
     if (t >= minDahTimeMs) {
-      // neuer Buchstabe
-      Serial.write(dits);
 
       if (index > 0) {
         lastChar = ditsToChar(dits);
@@ -172,7 +158,6 @@ void loop() {
 
 static testParis(uint16_t deltaT) {
   if (parisTest) {
-    Serial.print("parisTest");
     timeMeasured++;
 
     if (state == DOWN) {
@@ -192,14 +177,14 @@ ISR(TIMER2_OVF_vect) {
   t++;
 
   if (state == UP) {
-    if (digitalRead(PIN_TASTER) == LOW) {
+    if (digitalRead(PIN_TASTER) == HIGH) {
       state = DOWN;
       deltaT = t;
       t=0;
     }
     
   } else {
-    if (digitalRead(PIN_TASTER) == HIGH) {
+    if (digitalRead(PIN_TASTER) == LOW) {
       state = UP;
       deltaT = t;
       t=0;
@@ -208,6 +193,3 @@ ISR(TIMER2_OVF_vect) {
 
   testParis(t);
 }
-
-
-

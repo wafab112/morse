@@ -1,8 +1,6 @@
 #ifndef MUSTER_H
 #define MUSTER_H
 
-#include <stdint.h>
-
 #define musterErr 0x7FFFFFFFF
 
 #define musterA 0x3A31FC631
