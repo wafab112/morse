@@ -89,7 +89,7 @@ char ditsToChar(char* dits) {
     return '8';
   } else if (strcmp(dits, "----.") == 0) {
     return '9';
-  } else if (strcmp(dits, "------") == 0) {
+  } else if (strcmp(dits, "-----") == 0) {
     return '0';
   } 
 
