@@ -19,33 +19,6 @@
 #define PIN_COL_4 P3_4
 #define PIN_COL_5 P3_3
 
-static bool is_col_port3(int col) {
-  if (col == 0) {
-    return false;
-  }
-  return true;
-}
-
-static bool get_pin_of_col(int col) {
-  if (col == 1) {
-    return 7;
-  }
-
-  if (col == 2) {
-    return 5;
-  }
-
-  if (col == 3) {
-    return 4;
-  }
-
-  if (col == 4) {
-    return 3;
-  }
-
-  return -1;
-}
-
 void set_col(int col) {
   switch (col) {
   case 0: P1_0 = 1;
