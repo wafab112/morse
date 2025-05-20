@@ -2,8 +2,6 @@
 #include "taster.h"
 #include "morse.h"
 
-#include <string.h>
-
 #include <stdint.h>
 #include <8051.h>
 #include <stdbool.h>

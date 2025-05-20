@@ -1,0 +1,726 @@
+main                                                                                                                    PAGE 1
+                         1     #include "matrix.h"
+****ERROR:Unknownkeyword:`#include'`#include'isneithermacronorinstructionnordirective
+                         2     #include "taster.h"
+****ERROR:Unknownkeyword:`#include'`#include'isneithermacronorinstructionnordirective
+                         3     #include "morse.h"
+****ERROR:Unknownkeyword:`#include'`#include'isneithermacronorinstructionnordirective
+                         4
+                         5     #include <stdint.h>
+****ERROR:Unknownkeyword:`#include'`#include'isneithermacronorinstructionnordirective
+                         6     #include <8051.h>
+****ERROR:Unknownkeyword:`#include'`#include'isneithermacronorinstructionnordirective
+                         7     #include <stdbool.h>
+****ERROR:Unknownkeyword:`#include'`#include'isneithermacronorinstructionnordirective
+                         8
+                         9     #define PIN_TASTER 52
+****ERROR:Unknownkeyword:`#define'`#define'isneithermacronorinstructionnordirective
+                        10
+                        11     volatile uint16_t minDahTimeMs = 1000;
+****ERROR:Unknownkeyword:`volatile'`volatile'isneithermacronorinstructionnordirective
+                        12     volatile uint16_t deltaT = 0;
+****ERROR:Unknownkeyword:`volatile'`volatile'isneithermacronorinstructionnordirective
+                        13     volatile uint16_t t = 0;
+****ERROR:Unknownkeyword:`volatile'`volatile'isneithermacronorinstructionnordirective
+                        14     volatile TasterState state = UP;
+****ERROR:Unknownkeyword:`volatile'`volatile'isneithermacronorinstructionnordirective
+                        15     volatile uint64_t timeMeasured = 0;
+****ERROR:Unknownkeyword:`volatile'`volatile'isneithermacronorinstructionnordirective
+                        16
+                        17     morse_t dits = {0};
+****ERROR:Unknownkeyword:`morse_t'`morse_t'isneithermacronorinstructionnordirective
+                        18     morse_t empty = {0};
+****ERROR:Unknownkeyword:`morse_t'`morse_t'isneithermacronorinstructionnordirective
+                        19
+                        20     int index = 0;
+****ERROR:Unknownkeyword:`int'`int'isneithermacronorinstructionnordirective
+                        21     char lastChar = '+';
+****ERROR:Unknownkeyword:`char'`char'isneithermacronorinstructionnordirective
+                        22
+                        23     char ditsToChar(morse_t* dits) {
+****ERROR:Unknownkeyword:`char'`char'isneithermacronorinstructionnordirective
+                        24       switch(*(uint16_t *) dits) {
+****ERROR:Unknownkeyword:`switch(*(uint16_t'`switch(*(uint16_t'isneithermacronorinstructionnordirective
+                        25         case U_MORSE_A: return 'A';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        26             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        27         case U_MORSE_B: return 'B';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        28             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        29         case U_MORSE_C: return 'C';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        30             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        31         case U_MORSE_D: return 'D';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        32             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        33         case U_MORSE_E: return 'E';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        34             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        35         case U_MORSE_F: return 'F';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        36             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        37         case U_MORSE_G: return 'G';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        38             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        39         case U_MORSE_H: return 'H';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        40             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        41         case U_MORSE_I: return 'I';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        42             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        43         case U_MORSE_J: return 'J';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        44             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        45         case U_MORSE_K: return 'K';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        46             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        47         case U_MORSE_L: return 'L';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        48             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        49         case U_MORSE_M: return 'M';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        50             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        51         case U_MORSE_N: return 'N';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        52             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        53         case U_MORSE_O: return 'O';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        54             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        55         case U_MORSE_P: return 'P';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        56             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        57         case U_MORSE_Q: return 'Q';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        58             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        59         case U_MORSE_R: return 'R';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        60             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        61         case U_MORSE_S: return 'S';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        62             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        63         case U_MORSE_T: return 'T';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        64             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        65         case U_MORSE_U: return 'U';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        66             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        67         case U_MORSE_V: return 'V';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        68             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        69         case U_MORSE_W: return 'W';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        70             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        71         case U_MORSE_X: return 'X';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        72             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        73         case U_MORSE_Y: return 'Y';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        74             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        75         case U_MORSE_Z: return 'Z';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        76             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        77
+                        78         // Ziffern 0–9
+****ERROR:Unknownkeyword:`//'`//'isneithermacronorinstructionnordirective
+                        79         case U_MORSE_0: return '0';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        80             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        81         case U_MORSE_1: return '1';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        82             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        83         case U_MORSE_2: return '2';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        84             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        85         case U_MORSE_3: return '3';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        86             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        87         case U_MORSE_4: return '4';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        88             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        89         case U_MORSE_5: return '5';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        90             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        91         case U_MORSE_6: return '6';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        92             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        93         case U_MORSE_7: return '7';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        94             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        95         case U_MORSE_8: return '8';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        96             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        97         case U_MORSE_9: return '9';
+****ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+                        98             break;
+****ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+                        99
+                       100         default:
+                       101             return '+';
+****ERROR:Unknownkeyword:`return'`return'isneithermacronorinstructionnordirective
+                       102       }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       103
+                       104       return '+';
+****ERROR:Unknownkeyword:`return'`return'isneithermacronorinstructionnordirective
+                       105     }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       106
+                       107     void loop(void);
+****ERROR:Unknownkeyword:`void'`void'isneithermacronorinstructionnordirective
+                       108
+                       109     int main() {
+****ERROR:Unknownkeyword:`int'`int'isneithermacronorinstructionnordirective
+                       110       matrix_setup();
+****ERROR:Unknownkeyword:`matrix_setup()'`matrix_setup()'isneithermacronorinstructionnordirective
+                       111
+                       112       TMOD = 0x01;
+****ERROR:Unknownkeyword:`TMOD'`TMOD'isneithermacronorinstructionnordirective
+                       113       TH0 = 0xFC;
+****ERROR:Unknownkeyword:`TH0'`TH0'isneithermacronorinstructionnordirective
+                       114       TL0 = 0x18;
+****ERROR:Unknownkeyword:`TL0'`TL0'isneithermacronorinstructionnordirective
+                       115
+                       116       ET0=1;
+****ERROR:Unknownkeyword:`ET0=1'`ET0=1'isneithermacronorinstructionnordirective
+                       117       EA=1;
+****ERROR:Unknownkeyword:`EA=1'`EA=1'isneithermacronorinstructionnordirective
+                       118       TR0 = 1;
+****ERROR:Unknownkeyword:`TR0'`TR0'isneithermacronorinstructionnordirective
+                       119
+                       120       morse_cpy(&dits, &empty);
+****ERROR:Unknownkeyword:`morse_cpy(&dits,'`morse_cpy(&dits,'isneithermacronorinstructionnordirective
+                       121
+                       122       while(1) {
+****ERROR:Unknownkeyword:`while(1)'`while(1)'isneithermacronorinstructionnordirective
+                       123         loop();
+****ERROR:Unknownkeyword:`loop()'`loop()'isneithermacronorinstructionnordirective
+                       124       }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       125     }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       126
+                       127     void loop() {
+****ERROR:Unknownkeyword:`void'`void'isneithermacronorinstructionnordirective
+                       128
+                       129       if (deltaT != 0) {
+****ERROR:Invalidexpression`(deltaT!=0){'
+****ERROR:Undefinedsymbolname:deltat
+                       130         if (state == UP) {
+****ERROR:Invalidexpression`(state==UP){'
+****ERROR:Undefinedsymbolname:up
+****ERROR:Undefinedsymbolname:state
+                       131           if (deltaT < minDahTimeMs) {
+****ERROR:Invalidexpression`(deltaT<minDahTimeMs){'
+****ERROR:Undefinedsymbolname:mindahtimems
+****ERROR:Undefinedsymbolname:deltat
+                       132             dits.pattern = dits.pattern & (0xFF - (1 << (7 - index)));
+****ERROR:Unknownkeyword:`dits.pattern'`dits.pattern'isneithermacronorinstructionnordirective
+                       133           } else {
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       134             dits.pattern = dits.pattern | (1 << (7-index));
+****ERROR:Unknownkeyword:`dits.pattern'`dits.pattern'isneithermacronorinstructionnordirective
+                       135           }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       136
+                       137           dits.size++;
+****ERROR:Unknownkeyword:`dits.size++'`dits.size++'isneithermacronorinstructionnordirective
+                       138           index++;
+****ERROR:Unknownkeyword:`index++'`index++'isneithermacronorinstructionnordirective
+                       139           if (index == 5) {
+****ERROR:Invalidexpression`(index==5){'
+****ERROR:Undefinedsymbolname:index
+                       140             lastChar = ditsToChar(&dits);
+****ERROR:Unknownkeyword:`lastChar'`lastChar'isneithermacronorinstructionnordirective
+                       141             morse_cpy(&dits, &empty);
+****ERROR:Unknownkeyword:`morse_cpy(&dits,'`morse_cpy(&dits,'isneithermacronorinstructionnordirective
+                       142             index = 0;
+****ERROR:Unknownkeyword:`index'`index'isneithermacronorinstructionnordirective
+                       143           }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       144         }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       145
+                       146         deltaT = 0;
+****ERROR:Unknownkeyword:`deltaT'`deltaT'isneithermacronorinstructionnordirective
+                       147       }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       148
+                       149       if (state == UP) {
+****ERROR:Invalidexpression`(state==UP){'
+****ERROR:Undefinedsymbolname:up
+****ERROR:Undefinedsymbolname:state
+                       150         if (t >= minDahTimeMs) {
+****ERROR:Invalidexpression`(t>=minDahTimeMs){'
+****ERROR:Undefinedsymbolname:mindahtimems
+****ERROR:Undefinedsymbolname:t
+                       151
+                       152           if (index > 0) {
+****ERROR:Invalidexpression`(index>0){'
+****ERROR:Undefinedsymbolname:index
+                       153             lastChar = ditsToChar(&dits);
+****ERROR:Unknownkeyword:`lastChar'`lastChar'isneithermacronorinstructionnordirective
+                       154           }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       155           morse_cpy(&dits, &empty);
+****ERROR:Unknownkeyword:`morse_cpy(&dits,'`morse_cpy(&dits,'isneithermacronorinstructionnordirective
+                       156
+                       157           index = 0;
+****ERROR:Unknownkeyword:`index'`index'isneithermacronorinstructionnordirective
+                       158
+                       159           deltaT = 0;
+****ERROR:Unknownkeyword:`deltaT'`deltaT'isneithermacronorinstructionnordirective
+                       160           t = 0;
+****ERROR:Unknownkeyword:`t'`t'isneithermacronorinstructionnordirective
+                       161         }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       162       }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       163
+                       164       matrix_draw(lastChar);
+****ERROR:Unknownkeyword:`matrix_draw(lastChar)'`matrix_draw(lastChar)'isneithermacronorinstructionnordirective
+                       165     }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       166
+                       167     void ISR_Timer0(void) __interrupt 1 {
+****ERROR:Unknownkeyword:`void'`void'isneithermacronorinstructionnordirective
+                       168       TH0 = 0xFC;
+****ERROR:Unknownkeyword:`TH0'`TH0'isneithermacronorinstructionnordirective
+                       169       TL0 = 0x18;
+****ERROR:Unknownkeyword:`TL0'`TL0'isneithermacronorinstructionnordirective
+                       170
+                       171       t++;
+****ERROR:Unknownkeyword:`t++'`t++'isneithermacronorinstructionnordirective
+                       172
+                       173       if (state == UP) {
+****ERROR:Invalidexpression`(state==UP){'
+****ERROR:Undefinedsymbolname:up
+****ERROR:Undefinedsymbolname:state
+                       174         if (P3_2 == 0) {
+****ERROR:Invalidexpression`(P3_2==0){'
+****ERROR:Undefinedsymbolname:p3_2
+                       175           state = DOWN;
+****ERROR:Unknownkeyword:`state'`state'isneithermacronorinstructionnordirective
+                       176           deltaT = t;
+****ERROR:Unknownkeyword:`deltaT'`deltaT'isneithermacronorinstructionnordirective
+                       177           t=0;
+****ERROR:Unknownkeyword:`t=0'`t=0'isneithermacronorinstructionnordirective
+                       178         }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       179
+                       180       } else {
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       181         if (P3_2 == 1) {
+****ERROR:Invalidexpression`(P3_2==1){'
+****ERROR:Undefinedsymbolname:p3_2
+                       182           state = UP;
+****ERROR:Unknownkeyword:`state'`state'isneithermacronorinstructionnordirective
+                       183           deltaT = t;
+****ERROR:Unknownkeyword:`deltaT'`deltaT'isneithermacronorinstructionnordirective
+                       184           t=0;
+****ERROR:Unknownkeyword:`t=0'`t=0'isneithermacronorinstructionnordirective
+                       185         }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       186       }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+                       187     }
+****ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+****WARNING:Noinstructionfoundataddress0x00.ConsiderusageofappropriateORGdirectivetoclarifycorrectcodeplacement.
+                       188
+****WARNING:Missing`END'directive
+ASSEMBLY COMPLETE, NO ERRORS FOUND, 175 WARNINGS
+
+
+ERROR SUMMARY:
+Line 1, ERROR:Unknownkeyword:`#include'`#include'isneithermacronorinstructionnordirective
+Line 3, ERROR:Unknownkeyword:`#include'`#include'isneithermacronorinstructionnordirective
+Line 5, ERROR:Unknownkeyword:`#include'`#include'isneithermacronorinstructionnordirective
+Line 8, ERROR:Unknownkeyword:`#include'`#include'isneithermacronorinstructionnordirective
+Line 10, ERROR:Unknownkeyword:`#include'`#include'isneithermacronorinstructionnordirective
+Line 12, ERROR:Unknownkeyword:`#include'`#include'isneithermacronorinstructionnordirective
+Line 15, ERROR:Unknownkeyword:`#define'`#define'isneithermacronorinstructionnordirective
+Line 18, ERROR:Unknownkeyword:`volatile'`volatile'isneithermacronorinstructionnordirective
+Line 20, ERROR:Unknownkeyword:`volatile'`volatile'isneithermacronorinstructionnordirective
+Line 22, ERROR:Unknownkeyword:`volatile'`volatile'isneithermacronorinstructionnordirective
+Line 24, ERROR:Unknownkeyword:`volatile'`volatile'isneithermacronorinstructionnordirective
+Line 26, ERROR:Unknownkeyword:`volatile'`volatile'isneithermacronorinstructionnordirective
+Line 29, ERROR:Unknownkeyword:`morse_t'`morse_t'isneithermacronorinstructionnordirective
+Line 31, ERROR:Unknownkeyword:`morse_t'`morse_t'isneithermacronorinstructionnordirective
+Line 34, ERROR:Unknownkeyword:`int'`int'isneithermacronorinstructionnordirective
+Line 36, ERROR:Unknownkeyword:`char'`char'isneithermacronorinstructionnordirective
+Line 39, ERROR:Unknownkeyword:`char'`char'isneithermacronorinstructionnordirective
+Line 41, ERROR:Unknownkeyword:`switch(*(uint16_t'`switch(*(uint16_t'isneithermacronorinstructionnordirective
+Line 43, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 45, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 47, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 49, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 51, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 53, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 55, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 57, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 59, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 61, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 63, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 65, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 67, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 69, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 71, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 73, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 75, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 77, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 79, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 81, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 83, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 85, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 87, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 89, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 91, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 93, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 95, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 97, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 99, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 101, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 103, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 105, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 107, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 109, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 111, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 113, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 115, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 117, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 119, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 121, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 123, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 125, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 127, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 129, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 131, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 133, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 135, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 137, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 139, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 141, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 143, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 145, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 148, ERROR:Unknownkeyword:`//'`//'isneithermacronorinstructionnordirective
+Line 150, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 152, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 154, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 156, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 158, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 160, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 162, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 164, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 166, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 168, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 170, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 172, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 174, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 176, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 178, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 180, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 182, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 184, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 186, ERROR:Unknownkeyword:`case'`case'isneithermacronorinstructionnordirective
+Line 188, ERROR:Unknownkeyword:`break'`break'isneithermacronorinstructionnordirective
+Line 192, ERROR:Unknownkeyword:`return'`return'isneithermacronorinstructionnordirective
+Line 194, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 197, ERROR:Unknownkeyword:`return'`return'isneithermacronorinstructionnordirective
+Line 199, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 202, ERROR:Unknownkeyword:`void'`void'isneithermacronorinstructionnordirective
+Line 205, ERROR:Unknownkeyword:`int'`int'isneithermacronorinstructionnordirective
+Line 207, ERROR:Unknownkeyword:`matrix_setup()'`matrix_setup()'isneithermacronorinstructionnordirective
+Line 210, ERROR:Unknownkeyword:`TMOD'`TMOD'isneithermacronorinstructionnordirective
+Line 212, ERROR:Unknownkeyword:`TH0'`TH0'isneithermacronorinstructionnordirective
+Line 214, ERROR:Unknownkeyword:`TL0'`TL0'isneithermacronorinstructionnordirective
+Line 217, ERROR:Unknownkeyword:`ET0=1'`ET0=1'isneithermacronorinstructionnordirective
+Line 219, ERROR:Unknownkeyword:`EA=1'`EA=1'isneithermacronorinstructionnordirective
+Line 221, ERROR:Unknownkeyword:`TR0'`TR0'isneithermacronorinstructionnordirective
+Line 224, ERROR:Unknownkeyword:`morse_cpy(&dits,'`morse_cpy(&dits,'isneithermacronorinstructionnordirective
+Line 227, ERROR:Unknownkeyword:`while(1)'`while(1)'isneithermacronorinstructionnordirective
+Line 229, ERROR:Unknownkeyword:`loop()'`loop()'isneithermacronorinstructionnordirective
+Line 231, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 233, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 236, ERROR:Unknownkeyword:`void'`void'isneithermacronorinstructionnordirective
+Line 239, ERROR:Invalidexpression`(deltaT!=0){'
+Line 240, ERROR:Undefinedsymbolname:deltat
+Line 242, ERROR:Invalidexpression`(state==UP){'
+Line 243, ERROR:Undefinedsymbolname:up
+Line 244, ERROR:Undefinedsymbolname:state
+Line 246, ERROR:Invalidexpression`(deltaT<minDahTimeMs){'
+Line 247, ERROR:Undefinedsymbolname:mindahtimems
+Line 248, ERROR:Undefinedsymbolname:deltat
+Line 250, ERROR:Unknownkeyword:`dits.pattern'`dits.pattern'isneithermacronorinstructionnordirective
+Line 252, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 254, ERROR:Unknownkeyword:`dits.pattern'`dits.pattern'isneithermacronorinstructionnordirective
+Line 256, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 259, ERROR:Unknownkeyword:`dits.size++'`dits.size++'isneithermacronorinstructionnordirective
+Line 261, ERROR:Unknownkeyword:`index++'`index++'isneithermacronorinstructionnordirective
+Line 263, ERROR:Invalidexpression`(index==5){'
+Line 264, ERROR:Undefinedsymbolname:index
+Line 266, ERROR:Unknownkeyword:`lastChar'`lastChar'isneithermacronorinstructionnordirective
+Line 268, ERROR:Unknownkeyword:`morse_cpy(&dits,'`morse_cpy(&dits,'isneithermacronorinstructionnordirective
+Line 270, ERROR:Unknownkeyword:`index'`index'isneithermacronorinstructionnordirective
+Line 272, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 274, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 277, ERROR:Unknownkeyword:`deltaT'`deltaT'isneithermacronorinstructionnordirective
+Line 279, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 282, ERROR:Invalidexpression`(state==UP){'
+Line 283, ERROR:Undefinedsymbolname:up
+Line 284, ERROR:Undefinedsymbolname:state
+Line 286, ERROR:Invalidexpression`(t>=minDahTimeMs){'
+Line 287, ERROR:Undefinedsymbolname:mindahtimems
+Line 288, ERROR:Undefinedsymbolname:t
+Line 291, ERROR:Invalidexpression`(index>0){'
+Line 292, ERROR:Undefinedsymbolname:index
+Line 294, ERROR:Unknownkeyword:`lastChar'`lastChar'isneithermacronorinstructionnordirective
+Line 296, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 298, ERROR:Unknownkeyword:`morse_cpy(&dits,'`morse_cpy(&dits,'isneithermacronorinstructionnordirective
+Line 301, ERROR:Unknownkeyword:`index'`index'isneithermacronorinstructionnordirective
+Line 304, ERROR:Unknownkeyword:`deltaT'`deltaT'isneithermacronorinstructionnordirective
+Line 306, ERROR:Unknownkeyword:`t'`t'isneithermacronorinstructionnordirective
+Line 308, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 310, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 313, ERROR:Unknownkeyword:`matrix_draw(lastChar)'`matrix_draw(lastChar)'isneithermacronorinstructionnordirective
+Line 315, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 318, ERROR:Unknownkeyword:`void'`void'isneithermacronorinstructionnordirective
+Line 320, ERROR:Unknownkeyword:`TH0'`TH0'isneithermacronorinstructionnordirective
+Line 322, ERROR:Unknownkeyword:`TL0'`TL0'isneithermacronorinstructionnordirective
+Line 325, ERROR:Unknownkeyword:`t++'`t++'isneithermacronorinstructionnordirective
+Line 328, ERROR:Invalidexpression`(state==UP){'
+Line 329, ERROR:Undefinedsymbolname:up
+Line 330, ERROR:Undefinedsymbolname:state
+Line 332, ERROR:Invalidexpression`(P3_2==0){'
+Line 333, ERROR:Undefinedsymbolname:p3_2
+Line 335, ERROR:Unknownkeyword:`state'`state'isneithermacronorinstructionnordirective
+Line 337, ERROR:Unknownkeyword:`deltaT'`deltaT'isneithermacronorinstructionnordirective
+Line 339, ERROR:Unknownkeyword:`t=0'`t=0'isneithermacronorinstructionnordirective
+Line 341, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 344, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 346, ERROR:Invalidexpression`(P3_2==1){'
+Line 347, ERROR:Undefinedsymbolname:p3_2
+Line 349, ERROR:Unknownkeyword:`state'`state'isneithermacronorinstructionnordirective
+Line 351, ERROR:Unknownkeyword:`deltaT'`deltaT'isneithermacronorinstructionnordirective
+Line 353, ERROR:Unknownkeyword:`t=0'`t=0'isneithermacronorinstructionnordirective
+Line 355, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 357, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 359, ERROR:Unknownkeyword:`}'`}'isneithermacronorinstructionnordirective
+Line 360, WARNING:Noinstructionfoundataddress0x00.ConsiderusageofappropriateORGdirectivetoclarifycorrectcodeplacement.
+Line 362, WARNING:Missing`END'directive
+
+SYMBOL TABLE:
+??MCU_8051_IDE . . . . . . . . . . .  N  NUMB  8051H  NOT USED
+??VERSION. . . . . . . . . . . . . .  N  NUMB  0149H  NOT USED
+AC . . . . . . . . . . . . . . . . .  B  ADDR  00D6H  NOT USED
+ACC. . . . . . . . . . . . . . . . .  D  ADDR  00E0H  NOT USED
+ACSR . . . . . . . . . . . . . . . .  D  ADDR  0097H  NOT USED
+ADCF . . . . . . . . . . . . . . . .  D  ADDR  00F6H  NOT USED
+ADCLK. . . . . . . . . . . . . . . .  D  ADDR  00F2H  NOT USED
+ADCON. . . . . . . . . . . . . . . .  D  ADDR  00F3H  NOT USED
+ADDH . . . . . . . . . . . . . . . .  D  ADDR  00F5H  NOT USED
+ADDL . . . . . . . . . . . . . . . .  D  ADDR  00F4H  NOT USED
+AUXR . . . . . . . . . . . . . . . .  D  ADDR  008EH  NOT USED
+AUXR1. . . . . . . . . . . . . . . .  D  ADDR  00A2H  NOT USED
+B. . . . . . . . . . . . . . . . . .  D  ADDR  00F0H  NOT USED
+BDRCON . . . . . . . . . . . . . . .  D  ADDR  009BH  NOT USED
+BDRCON_1 . . . . . . . . . . . . . .  D  ADDR  009CH  NOT USED
+BRL. . . . . . . . . . . . . . . . .  D  ADDR  009AH  NOT USED
+CCAP0H . . . . . . . . . . . . . . .  D  ADDR  00FAH  NOT USED
+CCAP0L . . . . . . . . . . . . . . .  D  ADDR  00EAH  NOT USED
+CCAP1H . . . . . . . . . . . . . . .  D  ADDR  00FBH  NOT USED
+CCAP1L . . . . . . . . . . . . . . .  D  ADDR  00EBH  NOT USED
+CCAP2H . . . . . . . . . . . . . . .  D  ADDR  00FCH  NOT USED
+CCAP3H . . . . . . . . . . . . . . .  D  ADDR  00FDH  NOT USED
+CCAP4H . . . . . . . . . . . . . . .  D  ADDR  00FEH  NOT USED
+CCAPL2H. . . . . . . . . . . . . . .  D  ADDR  00FCH  NOT USED
+CCAPL2L. . . . . . . . . . . . . . .  D  ADDR  00ECH  NOT USED
+CCAPL3H. . . . . . . . . . . . . . .  D  ADDR  00FDH  NOT USED
+CCAPL3L. . . . . . . . . . . . . . .  D  ADDR  00EDH  NOT USED
+CCAPL4H. . . . . . . . . . . . . . .  D  ADDR  00FEH  NOT USED
+CCAPL4L. . . . . . . . . . . . . . .  D  ADDR  00EEH  NOT USED
+CCAPM0 . . . . . . . . . . . . . . .  D  ADDR  00DAH  NOT USED
+CCAPM1 . . . . . . . . . . . . . . .  D  ADDR  00DBH  NOT USED
+CCAPM2 . . . . . . . . . . . . . . .  D  ADDR  00DCH  NOT USED
+CCAPM3 . . . . . . . . . . . . . . .  D  ADDR  00DDH  NOT USED
+CCAPM4 . . . . . . . . . . . . . . .  D  ADDR  00DEH  NOT USED
+CCF0 . . . . . . . . . . . . . . . .  B  ADDR  00D8H  NOT USED
+CCF1 . . . . . . . . . . . . . . . .  B  ADDR  00D9H  NOT USED
+CCF2 . . . . . . . . . . . . . . . .  B  ADDR  00DAH  NOT USED
+CCF3 . . . . . . . . . . . . . . . .  B  ADDR  00DBH  NOT USED
+CCF4 . . . . . . . . . . . . . . . .  B  ADDR  00DCH  NOT USED
+CCON . . . . . . . . . . . . . . . .  D  ADDR  00D8H  NOT USED
+CFINT. . . . . . . . . . . . . . . .  C  ADDR  0033H  NOT USED
+CH . . . . . . . . . . . . . . . . .  D  ADDR  00F9H  NOT USED
+CKCON. . . . . . . . . . . . . . . .  D  ADDR  008FH  NOT USED
+CKCON0 . . . . . . . . . . . . . . .  D  ADDR  008FH  NOT USED
+CKRL . . . . . . . . . . . . . . . .  D  ADDR  0097H  NOT USED
+CKSEL. . . . . . . . . . . . . . . .  D  ADDR  0085H  NOT USED
+CL . . . . . . . . . . . . . . . . .  D  ADDR  00E9H  NOT USED
+CLKREG . . . . . . . . . . . . . . .  D  ADDR  008FH  NOT USED
+CMOD . . . . . . . . . . . . . . . .  D  ADDR  00D9H  NOT USED
+CPRL2. . . . . . . . . . . . . . . .  B  ADDR  00C8H  NOT USED
+CR . . . . . . . . . . . . . . . . .  B  ADDR  00DEH  NOT USED
+CT2. . . . . . . . . . . . . . . . .  B  ADDR  00C9H  NOT USED
+CY . . . . . . . . . . . . . . . . .  B  ADDR  00D7H  NOT USED
+DEFAULT. . . . . . . . . . . . . . .  C  ADDR  0000H  NOT USED
+DP0H . . . . . . . . . . . . . . . .  D  ADDR  0083H  NOT USED
+DP0L . . . . . . . . . . . . . . . .  D  ADDR  0082H  NOT USED
+DP1H . . . . . . . . . . . . . . . .  D  ADDR  0085H  NOT USED
+DP1L . . . . . . . . . . . . . . . .  D  ADDR  0084H  NOT USED
+DPH. . . . . . . . . . . . . . . . .  D  ADDR  0083H  NOT USED
+DPL. . . . . . . . . . . . . . . . .  D  ADDR  0082H  NOT USED
+EA . . . . . . . . . . . . . . . . .  B  ADDR  00AFH  NOT USED
+EC . . . . . . . . . . . . . . . . .  B  ADDR  00AEH  NOT USED
+EECON. . . . . . . . . . . . . . . .  D  ADDR  0096H  NOT USED
+ES . . . . . . . . . . . . . . . . .  B  ADDR  00ACH  NOT USED
+ET0. . . . . . . . . . . . . . . . .  B  ADDR  00A9H  NOT USED
+ET1. . . . . . . . . . . . . . . . .  B  ADDR  00ABH  NOT USED
+ET2. . . . . . . . . . . . . . . . .  B  ADDR  00ADH  NOT USED
+EX0. . . . . . . . . . . . . . . . .  B  ADDR  00A8H  NOT USED
+EX1. . . . . . . . . . . . . . . . .  B  ADDR  00AAH  NOT USED
+EXEN2. . . . . . . . . . . . . . . .  B  ADDR  00CBH  NOT USED
+EXF2 . . . . . . . . . . . . . . . .  B  ADDR  00CEH  NOT USED
+EXTI0. . . . . . . . . . . . . . . .  C  ADDR  0003H  NOT USED
+EXTI1. . . . . . . . . . . . . . . .  C  ADDR  0013H  NOT USED
+F0 . . . . . . . . . . . . . . . . .  B  ADDR  00D5H  NOT USED
+FE . . . . . . . . . . . . . . . . .  B  ADDR  009FH  NOT USED
+IE . . . . . . . . . . . . . . . . .  D  ADDR  00A8H  NOT USED
+IE0. . . . . . . . . . . . . . . . .  B  ADDR  0089H  NOT USED
+IE1. . . . . . . . . . . . . . . . .  B  ADDR  008BH  NOT USED
+INT0 . . . . . . . . . . . . . . . .  B  ADDR  00B2H  NOT USED
+INT1 . . . . . . . . . . . . . . . .  B  ADDR  00B3H  NOT USED
+IP . . . . . . . . . . . . . . . . .  D  ADDR  00B8H  NOT USED
+IPH. . . . . . . . . . . . . . . . .  D  ADDR  00B7H  NOT USED
+IPH0 . . . . . . . . . . . . . . . .  D  ADDR  00B7H  NOT USED
+IPH1 . . . . . . . . . . . . . . . .  D  ADDR  00B3H  NOT USED
+IPL0 . . . . . . . . . . . . . . . .  D  ADDR  00B8H  NOT USED
+IPL1 . . . . . . . . . . . . . . . .  D  ADDR  00B2H  NOT USED
+IT0. . . . . . . . . . . . . . . . .  B  ADDR  0088H  NOT USED
+IT1. . . . . . . . . . . . . . . . .  B  ADDR  008AH  NOT USED
+KBE. . . . . . . . . . . . . . . . .  D  ADDR  009DH  NOT USED
+KBF. . . . . . . . . . . . . . . . .  D  ADDR  009EH  NOT USED
+KBLS . . . . . . . . . . . . . . . .  D  ADDR  009CH  NOT USED
+OSCCON . . . . . . . . . . . . . . .  D  ADDR  0086H  NOT USED
+OV . . . . . . . . . . . . . . . . .  B  ADDR  00D2H  NOT USED
+P. . . . . . . . . . . . . . . . . .  B  ADDR  00D0H  NOT USED
+P0 . . . . . . . . . . . . . . . . .  D  ADDR  0080H  NOT USED
+P1 . . . . . . . . . . . . . . . . .  D  ADDR  0090H  NOT USED
+P1M1 . . . . . . . . . . . . . . . .  D  ADDR  00D4H  NOT USED
+P1M2 . . . . . . . . . . . . . . . .  D  ADDR  00E2H  NOT USED
+P2 . . . . . . . . . . . . . . . . .  D  ADDR  00A0H  NOT USED
+P3 . . . . . . . . . . . . . . . . .  D  ADDR  00B0H  NOT USED
+P3M1 . . . . . . . . . . . . . . . .  D  ADDR  00D5H  NOT USED
+P3M2 . . . . . . . . . . . . . . . .  D  ADDR  00E3H  NOT USED
+P4 . . . . . . . . . . . . . . . . .  D  ADDR  00C0H  NOT USED
+P4M1 . . . . . . . . . . . . . . . .  D  ADDR  00D6H  NOT USED
+P4M2 . . . . . . . . . . . . . . . .  D  ADDR  00E4H  NOT USED
+P5 . . . . . . . . . . . . . . . . .  D  ADDR  00E8H  NOT USED
+PC . . . . . . . . . . . . . . . . .  B  ADDR  00BEH  NOT USED
+PCON . . . . . . . . . . . . . . . .  D  ADDR  0087H  NOT USED
+PPCL . . . . . . . . . . . . . . . .  B  ADDR  00BEH  NOT USED
+PS . . . . . . . . . . . . . . . . .  B  ADDR  00BCH  NOT USED
+PSL. . . . . . . . . . . . . . . . .  B  ADDR  00BCH  NOT USED
+PSW. . . . . . . . . . . . . . . . .  D  ADDR  00D0H  NOT USED
+PT0. . . . . . . . . . . . . . . . .  B  ADDR  00B9H  NOT USED
+PT0L . . . . . . . . . . . . . . . .  B  ADDR  00B9H  NOT USED
+PT1. . . . . . . . . . . . . . . . .  B  ADDR  00BBH  NOT USED
+PT1L . . . . . . . . . . . . . . . .  B  ADDR  00BBH  NOT USED
+PT2. . . . . . . . . . . . . . . . .  B  ADDR  00BDH  NOT USED
+PT2L . . . . . . . . . . . . . . . .  B  ADDR  00BDH  NOT USED
+PX0. . . . . . . . . . . . . . . . .  B  ADDR  00B8H  NOT USED
+PX0L . . . . . . . . . . . . . . . .  B  ADDR  00B8H  NOT USED
+PX1. . . . . . . . . . . . . . . . .  B  ADDR  00BAH  NOT USED
+PX1L . . . . . . . . . . . . . . . .  B  ADDR  00BAH  NOT USED
+RB8. . . . . . . . . . . . . . . . .  B  ADDR  009AH  NOT USED
+RCAP2H . . . . . . . . . . . . . . .  D  ADDR  00CBH  NOT USED
+RCAP2L . . . . . . . . . . . . . . .  D  ADDR  00CAH  NOT USED
+RCLK . . . . . . . . . . . . . . . .  B  ADDR  00CDH  NOT USED
+RD . . . . . . . . . . . . . . . . .  B  ADDR  00B7H  NOT USED
+REN. . . . . . . . . . . . . . . . .  B  ADDR  009CH  NOT USED
+RESET. . . . . . . . . . . . . . . .  C  ADDR  0000H  NOT USED
+RI . . . . . . . . . . . . . . . . .  B  ADDR  0098H  NOT USED
+RS0. . . . . . . . . . . . . . . . .  B  ADDR  00D3H  NOT USED
+RS1. . . . . . . . . . . . . . . . .  B  ADDR  00D4H  NOT USED
+RXD. . . . . . . . . . . . . . . . .  B  ADDR  00B0H  NOT USED
+SADDR. . . . . . . . . . . . . . . .  D  ADDR  00A9H  NOT USED
+SADDR_0. . . . . . . . . . . . . . .  D  ADDR  00A9H  NOT USED
+SADDR_1. . . . . . . . . . . . . . .  D  ADDR  00AAH  NOT USED
+SADEN. . . . . . . . . . . . . . . .  D  ADDR  00B9H  NOT USED
+SADEN_0. . . . . . . . . . . . . . .  D  ADDR  00B9H  NOT USED
+SADEN_1. . . . . . . . . . . . . . .  D  ADDR  00BAH  NOT USED
+SBUF . . . . . . . . . . . . . . . .  D  ADDR  0099H  NOT USED
+SCON . . . . . . . . . . . . . . . .  D  ADDR  0098H  NOT USED
+SINT . . . . . . . . . . . . . . . .  C  ADDR  0023H  NOT USED
+SM0. . . . . . . . . . . . . . . . .  B  ADDR  009FH  NOT USED
+SM1. . . . . . . . . . . . . . . . .  B  ADDR  009EH  NOT USED
+SM2. . . . . . . . . . . . . . . . .  B  ADDR  009DH  NOT USED
+SP . . . . . . . . . . . . . . . . .  D  ADDR  0081H  NOT USED
+SPCON. . . . . . . . . . . . . . . .  D  ADDR  00C3H  NOT USED
+SPCR . . . . . . . . . . . . . . . .  D  ADDR  00D5H  NOT USED
+SPDAT. . . . . . . . . . . . . . . .  D  ADDR  00C5H  NOT USED
+SPDR . . . . . . . . . . . . . . . .  D  ADDR  0086H  NOT USED
+SPSR . . . . . . . . . . . . . . . .  D  ADDR  00AAH  NOT USED
+SPSTA. . . . . . . . . . . . . . . .  D  ADDR  00C4H  NOT USED
+T0 . . . . . . . . . . . . . . . . .  B  ADDR  00B4H  NOT USED
+T1 . . . . . . . . . . . . . . . . .  B  ADDR  00B5H  NOT USED
+T2CON. . . . . . . . . . . . . . . .  D  ADDR  00C8H  NOT USED
+T2MOD. . . . . . . . . . . . . . . .  D  ADDR  00C9H  NOT USED
+TB8. . . . . . . . . . . . . . . . .  B  ADDR  009BH  NOT USED
+TCLK . . . . . . . . . . . . . . . .  B  ADDR  00CCH  NOT USED
+TCON . . . . . . . . . . . . . . . .  D  ADDR  0088H  NOT USED
+TF0. . . . . . . . . . . . . . . . .  B  ADDR  008DH  NOT USED
+TF1. . . . . . . . . . . . . . . . .  B  ADDR  008FH  NOT USED
+TF2. . . . . . . . . . . . . . . . .  B  ADDR  00CFH  NOT USED
+TH0. . . . . . . . . . . . . . . . .  D  ADDR  008CH  NOT USED
+TH1. . . . . . . . . . . . . . . . .  D  ADDR  008DH  NOT USED
+TH2. . . . . . . . . . . . . . . . .  D  ADDR  00CDH  NOT USED
+TI . . . . . . . . . . . . . . . . .  B  ADDR  0099H  NOT USED
+TIMER0 . . . . . . . . . . . . . . .  C  ADDR  000BH  NOT USED
+TIMER1 . . . . . . . . . . . . . . .  C  ADDR  001BH  NOT USED
+TIMER2 . . . . . . . . . . . . . . .  C  ADDR  002BH  NOT USED
+TL0. . . . . . . . . . . . . . . . .  D  ADDR  008AH  NOT USED
+TL1. . . . . . . . . . . . . . . . .  D  ADDR  008BH  NOT USED
+TL2. . . . . . . . . . . . . . . . .  D  ADDR  00CCH  NOT USED
+TMOD . . . . . . . . . . . . . . . .  D  ADDR  0089H  NOT USED
+TR0. . . . . . . . . . . . . . . . .  B  ADDR  008CH  NOT USED
+TR1. . . . . . . . . . . . . . . . .  B  ADDR  008EH  NOT USED
+TR2. . . . . . . . . . . . . . . . .  B  ADDR  00CAH  NOT USED
+TXD. . . . . . . . . . . . . . . . .  B  ADDR  00B1H  NOT USED
+WDTCON . . . . . . . . . . . . . . .  D  ADDR  00A7H  NOT USED
+WDTPRG . . . . . . . . . . . . . . .  D  ADDR  00A7H  NOT USED
+WDTRST . . . . . . . . . . . . . . .  D  ADDR  00A6H  NOT USED
+WR . . . . . . . . . . . . . . . . .  B  ADDR  00B6H  NOT USED
